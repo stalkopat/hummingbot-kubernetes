@@ -15,6 +15,7 @@ But there is still a lot of quality of life improvements:
     - No more fiddling with start / stop commands and config files
     - No longer bound to a single Virtual Machine / VPS
     - Easy overview of current instances
+    - Effortlessly scale both horizontally and vertically
 
 In Kubernetes a Container itself is stateless, it can be destroyed and recreated at will by both the cluster itself and by yourself.
 Due to that the configurations are the only differing factor between two containers, everything else can be switched up at will.
@@ -68,3 +69,18 @@ You can access the current output of the instance via
 
 I recommend doing so inside of a visual studio terminal, hummingbot updates the console screen via control characters 
 and in my experience only powershell inside of the vscode terminal is able to properly parse them and show you the current output.
+
+# FAQ
+1. Can kubernetes run servers at multiple, different service providers like Lansol, Contabo, Linode, Digital Ocean, etc?
+
+Yes, kubernetes can run a cluster across multiple providers, but its rather complicated unless you get another 
+provider to do the managing for you, take a look at https://cloud.google.com/anthos
+
+2. Is there limitation to no. of bots it can scale up to?
+
+Realistically there isn't any limitation besides how deep your pockets are, technically you can only go up to 110 hummingbot 
+instances per underlying node and up to 300'000 total hummingbot instances but you won't realistically reach that size.
+
+3. Does running kubernetes needs a lot of maintenance, or deeper know-how?
+
+Kubernetes is really low maintenance unless you roll your own, when using a managed provider you will have automatic updates of the cluster (via rolling update, pods get moved from one node to the other(s). That one node shuts down, updates itself, then comes back online, pods get moved to the original node and the second node updates). Deeper know how isn't really necessary because of hummingbots "simplistic" nature of not being interconnected with other pods / services.
