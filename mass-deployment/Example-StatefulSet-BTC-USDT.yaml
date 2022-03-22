@@ -1,0 +1,356 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: btc-usdt
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: btc-usdt-config
+data:
+  quickstart.yml: |
+    ########################################################
+    ###       Pure market making strategy config         ###
+    ########################################################
+
+    template_version: 22
+    strategy: pure_market_making
+
+    # Exchange and token parameters.
+    exchange: ascend_ex_paper_trade
+
+    # Token trading pair for the exchange, e.g. BTC-USDT
+    market: BTC-USDT
+
+    # How far away from mid price to place the bid order.
+    # Spread of 1 = 1% away from mid price at that time.
+    # Example if mid price is 100 and bid_spread is 1.
+    # Your bid is placed at 99.
+    bid_spread: 1.0
+
+    # How far away from mid price to place the ask order.
+    # Spread of 1 = 1% away from mid price at that time.
+    # Example if mid price is 100 and ask_spread is 1.
+    # Your bid is placed at 101.
+    ask_spread: 1.0
+
+    # Minimum Spread
+    # How far away from the mid price to cancel active orders
+    minimum_spread: -100.0
+
+    maximum_spread: -100.0
+
+    # Time in seconds before cancelling and placing new orders.
+    # If the value is 60, the bot cancels active orders and placing new ones after a minute.
+    order_refresh_time: 30.0
+
+    # Time in seconds before replacing existing order with new orders at the same price.
+    max_order_age: 1800.0
+
+    # The spread (from mid price) to defer order refresh process to the next cycle.
+    # (Enter 1 to indicate 1%), value below 0, e.g. -1, is to disable this feature - not recommended.
+    order_refresh_tolerance_pct: 0.0
+
+    # Size of your bid and ask order.
+    order_amount: 0.05
+
+    # Price band ceiling.
+    price_ceiling: -1.0
+
+    # Price band floor.
+    price_floor: -1.0
+
+    # Whether to alternate between buys and sells (true/false).
+    ping_pong_enabled: false
+
+    # Whether to enable Inventory skew feature (true/false).
+    inventory_skew_enabled: false
+
+    # Target base asset inventory percentage target to be maintained (for Inventory skew feature).
+    inventory_target_base_pct: 50.0
+
+    # The range around the inventory target base percent to maintain, expressed in multiples of total order size (for
+    # inventory skew feature).
+    inventory_range_multiplier: 1.0
+
+    # Initial price of the base asset. Note: this setting is not affects anything, the price is kept in the database.
+    inventory_price: 1.0
+
+    # Number of levels of orders to place on each side of the order book.
+    order_levels: 1
+
+    # Increase or decrease size of consecutive orders after the first order (if order_levels > 1).
+    order_level_amount: 0
+
+    # Order price space between orders (if order_levels > 1).
+    order_level_spread: 1.0
+
+    # How long to wait before placing the next order in case your order gets filled.
+    filled_order_delay: 60
+
+    # Whether to stop cancellations of orders on the other side (of the order book),
+    # when one side is filled (hanging orders feature) (true/false).
+    hanging_orders_enabled: false
+
+    # Spread (from mid price, in percentage) hanging orders will be canceled (Enter 1 to indicate 1%)
+    hanging_orders_cancel_pct: 10.0
+
+    # Whether to enable order optimization mode (true/false).
+    order_optimization_enabled: false
+
+    # The depth in base asset amount to be used for finding top ask (for order optimization mode).
+    ask_order_optimization_depth: 0
+
+    # The depth in base asset amount to be used for finding top bid (for order optimization mode).
+    bid_order_optimization_depth: 0
+
+    # Whether to enable adding transaction costs to order price calculation (true/false).
+    add_transaction_costs: false
+
+    # The price source (current_market/external_market/custom_api/coingecko).
+    price_source: current_market
+
+    # The price type (mid_price/last_price/last_own_trade_price/best_bid/best_ask/inventory_cost).
+    price_type: mid_price
+
+    # An external exchange name (for external exchange pricing source).
+    price_source_exchange:
+
+    # A trading pair for the external exchange, e.g. BTC-USDT (for external exchange pricing source).
+    price_source_market:
+
+    # An external api that returns price (for custom_api pricing source).
+    price_source_custom_api:
+
+    # An interval time in second to update the price from custom api (for custom_api pricing source).
+    custom_api_update_interval: 5.0
+
+    #Take order if they cross order book when external price source is enabled
+    take_if_crossed:
+
+    coin_gecko_token:
+
+    coin_gecko_chain:
+
+    # Use user provided orders to directly override the orders placed by order_amount and order_level_parameter
+    # This is an advanced feature and user is expected to directly edit this field in config file
+    # Below is an sample input, the format is a dictionary, the key is user-defined order name, the value is a list which includes buy/sell, order spread, and order amount
+    # order_override:
+    #   order_1: [buy, 0.5, 100]
+    #   order_2: [buy, 0.75, 200]
+    #   order_3: [sell, 0.1, 500]
+    # Please make sure there is a space between : and [
+    order_override:
+
+    # If the strategy should wait to receive cancellations confirmation before creating new orders during refresh time
+    should_wait_order_cancel_confirmation: true
+
+    # For more detailed information, see:
+    # https://docs.hummingbot.io/strategies/pure-market-making/#configuration-parameters
+  encrypted_default.json: |
+    {"crypto": {"cipher": "aes-128-ctr", "cipherparams": {"iv": "d8a5616866c2606c43693018bcafed6f"}, "ciphertext": "2a688380b2526891dfb3df7ae02e52c6d630", "kdf": "pbkdf2", "kdfparams": {"c": 1000000, "dklen": 32, "prf": "hmac-sha256", "salt": "5e1169dac4635bb84c121e22d7c049ef"}, "mac": "d7ee8c928c993738a5b671ce98c7b1b5f0c0ef899bb1b93a95879a3864d70d62"}, "version": 3}
+  conf_global.yml: |
+    #################################
+    ###   Global configurations   ###
+    #################################
+
+    # For more detailed information: https://docs.hummingbot.io
+    template_version: 33
+
+    # Exchange configs
+
+    kraken_api_tier: Starter
+
+    celo_address:
+    ethereum_wallet:
+    ethereum_rpc_url:
+    ethereum_rpc_ws_url:
+    ethereum_chain_name: MAIN_NET
+    ethereum_token_list_url: https://wispy-bird-88a7.uniswap.workers.dev/?url=http://tokens.1inch.eth.link
+
+    # Kill switch
+    kill_switch_enabled: false
+    # The rate of performance at which you would want the bot to stop trading (-20 = 20%)
+    kill_switch_rate: -100
+
+    # What to auto-fill in the prompt after each import command (start/config)
+    autofill_import:
+
+    # Paper Trading
+    paper_trade_exchanges:
+    - binance
+    - kucoin
+    - ascend_ex
+    - gate_io
+    paper_trade_account_balance:
+      BTC: 1
+      USDT: 1000
+      ONE: 1000
+      USDQ: 1000
+      TUSD: 1000
+      ETH: 10
+      WETH: 10
+      USDC: 1000
+      DAI: 1000
+
+    telegram_enabled: false
+    telegram_token:
+    telegram_chat_id:
+
+    # Error log sharing
+    send_error_logs: true
+
+    # Advanced configs: Do NOT touch unless you understand what you are changing
+    instance_id: 55e7d8bfe5a3983eb0174074480e5cf604ecba42
+    log_level: INFO
+    debug_console: false
+    strategy_report_interval: 900.0
+    logger_override_whitelist:
+    - hummingbot.strategy.arbitrage
+    - hummingbot.strategy.cross_exchange_market_making
+    - conf
+    key_file_path: conf/
+    log_file_path: logs/
+
+    # Advanced database options, currently supports SQLAlchemy's included dialects
+    # Reference: https://docs.sqlalchemy.org/en/13/dialects/
+    db_engine: sqlite
+    db_host: 127.0.0.1
+    db_port: '3306'
+    db_username: username
+    db_password: password
+    db_name: dbname
+
+    script_enabled: false
+    script_file_path:
+
+    # Balance Limit Configurations
+    # e.g. Setting USDT and BTC limits on Binance.
+    # balance_asset_limit:
+    #   binance:
+    #     BTC: 0.1
+    #     USDT: 1000
+    balance_asset_limit:
+      binance:
+
+    # Fixed gas price (in Gwei) for Ethereum transactions
+    manual_gas_price: 50
+
+    # Gateway API Configurations
+    # default host to only use localhost
+    # Port need to match the final installation port for Gateway
+    gateway_api_host: localhost
+    gateway_api_port: '5000'
+
+    # Whether to enable aggregated order and trade data collection
+    heartbeat_enabled: true
+    # The frequency of sending the aggregated order and trade data (in minutes, e.g. enter 5 for once every 5 minutes)
+    heartbeat_interval_min: 15.0
+
+    # Command Shortcuts
+    # Define abbreviations for often used commands
+    # or batch grouped commands together
+    #
+    command_shortcuts:
+    - command: spreads
+      help: Set bid and ask spread
+      arguments: [Bid Spread, Ask Spread]
+      output: [config bid_spread $1, config ask_spread $2]
+
+    # A source for rate oracle, currently binance or coingecko
+    rate_oracle_source: binance
+
+    # A universal token which to display tokens values in, e.g. USD,EUR,BTC
+    global_token: USD
+
+    # A symbol for the global token, e.g. $, €
+    global_token_symbol: $
+
+    # Percentage of API rate limits (on any exchange and any end point) allocated to this bot instance.
+    # Enter 50 to indicate 50%. E.g. if the API rate limit is 100 calls per second, and you allocate 50% to this setting,
+    # the bot will have a maximum (limit) of 50 calls per second
+    rate_limits_share_pct: 100.0
+
+    # network timeout when fetching minimum order amount in the `create` command
+    create_command_timeout: 10.0
+
+    # network timeout for other commands (i.e. import, connect, balance, history)
+    other_commands_timeout: 30.0
+
+    # Background color of the top pane
+    top-pane: '#000000'
+
+    # Background color of the bottom pane
+    bottom-pane: '#000000'
+
+    # Background color of the output pane
+    output-pane: '#262626'
+
+    # Background color of the input pane
+    input-pane: '#1C1C1C'
+
+    # Background color of the logs pane
+    logs-pane: '#121212'
+
+    # Terminal primary color
+    terminal-primary: '#5FFFD7'
+
+    # Primary label color
+    primary-label: '#5FFFD7'
+
+    # Secondary label color
+    secondary-label: '#FFFFFF'
+
+    # Success label color
+    success-label: '#5FFFD7'
+
+    # Warning label color
+    warning-label: '#FFFF00'
+
+    # Info label color
+    info-label: '#5FD7FF'
+
+    # Error label color
+    error-label: '#FF0000'
+
+    # tabulate table format style (https://github.com/astanin/python-tabulate#table-format)
+    tables_format: psql
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: btc-usdt
+spec:
+  replicas: 1
+  serviceName: btc-usdt
+  selector:
+    matchLabels:
+      app: btc-usdt-hummingbot
+  template:
+    metadata:
+      labels:
+        app: btc-usdt-hummingbot
+    spec:
+      serviceAccountName: btc-usdt
+      containers:
+        - name: btc-usdt
+          image: coinalpha/hummingbot:development
+          imagePullPolicy: IfNotPresent
+          tty: true
+          stdin: true
+          command: [/bin/bash]
+          args:
+            - -c
+            - >
+              cp -r /readonly-conf/. /conf ; /home/hummingbot/miniconda3/envs/$(head -1 setup/environment-linux.yml | cut -d' ' -f2)/bin/python3
+              bin/hummingbot_quickstart.py
+              -p ChangeM3Pl34se
+              -f quickstart.yml
+          volumeMounts:
+            - name: config
+              mountPath: "/readonly-conf"
+      volumes:
+        - name: config
+          configMap:
+            name: btc-usdt-config
