@@ -50,6 +50,7 @@ using
 you can watch the current status of your pod (A pod is a wrapper around you container):
 
 NAME         READY   STATUS              RESTARTS   AGE
+
 btc-usdt-0   0/1     ContainerCreating   0          22s
 
 The first time you deploy a Pod it will take a bit of time because it has to pull the docker image 
@@ -57,6 +58,7 @@ from coinalphas dockerhub, subsequent deployments should run through quicker.
 After a bit of time you will see that the status has changed to "Running" this indicates that the hummingbot instance is now live:
 
 NAME         READY   STATUS    RESTARTS   AGE
+
 btc-usdt-0   1/1     Running   0          2m2s
 
 Now of course you won't know what exactly it is doing inside of the pod, since you cant access the user interface.
