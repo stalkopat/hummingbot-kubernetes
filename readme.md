@@ -26,17 +26,17 @@ but its an option if one has a requirement to keep logs for some reason.
 Now you might think that they both fullfill the same purpose, but there is a distinct difference between them, Docker is to an
 Application what Kubernetes is to your Infrastructure. You still have to care about the underlying infrastructure when using Docker
 on individual Virtual Machines. 
-Here is an example deployment of 3 Hummingbot Instances via both source and via docker:
+Here is an example deployment of 3 Hummingbot instances via both source and via Docker:
 ![image](https://user-images.githubusercontent.com/25117613/159880909-7f5e27b4-4305-4246-9759-4365e5511b88.png)
 
-Kubernetes abstracts the connection between Containers and the hardware away:
+Kubernetes abstracts the connection between containers and the hardware away:
 ![image](https://user-images.githubusercontent.com/25117613/159881182-bb8e203f-e3aa-4f69-89f0-ca9f970e709d.png)
 
 You don't have to care about the underlying hardware anymore, it can be created, destroyed and changed at will, 
 without you having to do anything to accomodate your hummingbot instances
 
 # Hummingbot inside of Kubernetes
-There is a lot of ways to deploy a (docker) container inside of Kubernetes. Luckily for us Hummingbot is self contained and
+There is a lot of ways to deploy a (Docker) container inside of Kubernetes. Luckily for us hummingbot is self contained and
 only needs connection to the exchanges it market makes on, because of that we can skip the more advanced ressources like DeamonSet 
 and ReplicaSet for example. I personally have had a good experience using StatefulSets. Each hummingbot instance is 
 represented through 3 different ressources inside of my workflow:
@@ -97,3 +97,10 @@ instances per underlying node and up to 300'000 total hummingbot instances but y
 3. Does running kubernetes needs a lot of maintenance, or deeper know-how?
 
 Kubernetes is really low maintenance unless you roll your own, when using a managed provider you will have automatic updates of the cluster (via rolling update, pods get moved from one node to the other(s). That one node shuts down, updates itself, then comes back online, pods get moved to the original node and the second node updates). Deeper know how isn't really necessary because of hummingbots "simplistic" nature of not being interconnected with other pods / services.
+
+4. Are there any pitfalls to consider?
+
+Yes! For one log keeping becomes more complicated, you can't access the hummingbot instance directly to look at the P&L and order volume.
+Ideally you would use the P&L Notebook to look at individual performance of your bots.
+Another issue is hanging orders on exchanges, since you don't "gracefully" shut the container down when they get recreated by the cluster 
+your open orders will stay hanging on the exchange. I've solved that by manually going to the exchanges and cancelling all open orders.
