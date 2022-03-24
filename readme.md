@@ -28,8 +28,10 @@ Application what Kubernetes is to your Infrastructure. You still have to care ab
 on individual Virtual Machines. 
 Here is an example deployment of 3 Hummingbot Instances via both source and via docker:
 ![image](https://user-images.githubusercontent.com/25117613/159880909-7f5e27b4-4305-4246-9759-4365e5511b88.png)
+
 Kubernetes abstracts the connection between Containers and the hardware away:
 ![image](https://user-images.githubusercontent.com/25117613/159881182-bb8e203f-e3aa-4f69-89f0-ca9f970e709d.png)
+
 You don't have to care about the underlying hardware anymore, it can be created, destroyed and changed at will, 
 without you having to do anything to accomodate your hummingbot instances
 
