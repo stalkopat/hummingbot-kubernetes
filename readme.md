@@ -22,6 +22,17 @@ Due to that the configurations are the only differing factor between two contain
 There are persistent volumes one could attach for keep logs or different data. I personally haven't used anything in that direction
 but its an option if one has a requirement to keep logs for some reason.
 
+# Kubernetes vs Docker
+Now you might think that they both fullfill the same purpose, but there is a distinct difference between them, Docker is to an
+Application what Kubernetes is to your Infrastructure. You still have to care about the underlying infrastructure when using Docker
+on individual Virtual Machines. 
+Here is an example deployment of 3 Hummingbot Instances via both source and via docker:
+![image](https://user-images.githubusercontent.com/25117613/159880909-7f5e27b4-4305-4246-9759-4365e5511b88.png)
+Kubernetes abstracts the connection between Containers and the hardware away:
+![image](https://user-images.githubusercontent.com/25117613/159881182-bb8e203f-e3aa-4f69-89f0-ca9f970e709d.png)
+You don't have to care about the underlying hardware anymore, it can be created, destroyed and changed at will, 
+without you having to do anything to accomodate your hummingbot instances
+
 # Hummingbot inside of Kubernetes
 There is a lot of ways to deploy a (docker) container inside of Kubernetes. Luckily for us Hummingbot is self contained and
 only needs connection to the exchanges it market makes on, because of that we can skip the more advanced ressources like DeamonSet 
